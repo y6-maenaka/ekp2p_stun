@@ -210,7 +210,7 @@ std::shared_ptr<EKP2PMessage> EKP2P::receiveSingleEKP2PMSG( unsigned short liste
 
 	struct sockaddr_in fromAddr;
 	std::shared_ptr<unsigned char> rawMSG; size_t rawMSGLength;
-	rawMSGLength = sockManager->receive(  &rawMSG, &fromAddr );
+	rawMSGLength = sockManager->receive(  &rawMSG, fromAddr );
 
 	auto parseRawMSG = ([]( std::shared_ptr<unsigned char> fromRawMSG , size_t fromRawMSGLength ) -> std::shared_ptr<EKP2PMessage>
 	{
