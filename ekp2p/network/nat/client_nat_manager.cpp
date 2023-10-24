@@ -1,6 +1,5 @@
 #include "client_nat_manager.h"
 
-#include "../inband/inband_manager.h"
 #include "../socket_manager/socket_manager.h"
 
 #include "./stun_message.h"
