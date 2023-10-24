@@ -58,7 +58,7 @@ int EKP2PReceiver::start()
 		
 		for(;;)
 		{
-			receivedLength = _listeningSocketManager->receive( &rawMessage , &fromAddr );
+			receivedLength = _listeningSocketManager->receive( &rawMessage , fromAddr );
 			if( receivedLength <= 0 ) continue;
 			// receivedLength = recvfrom( _listeningSocketManager->sock() , receiveBuffer.get() , UINT16_MAX , 0 , nullptr , 0 );
 

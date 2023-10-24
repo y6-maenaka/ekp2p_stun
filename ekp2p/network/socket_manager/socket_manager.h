@@ -51,7 +51,7 @@ public:
 	int send( std::shared_ptr<unsigned char> rawBuff, size_t rawBuffLength );
 	int send( std::shared_ptr<EKP2PMessage> msg );
 
-	size_t receive( std::shared_ptr<unsigned char> *retRaw , struct sockaddr_in *fromAddr );
+	size_t receive( std::shared_ptr<unsigned char> *retRaw , struct sockaddr_in &fromAddr );
 	/* send() によって振り分けられる */
 	// bool sendUDP();
 	// bool sendTCP();

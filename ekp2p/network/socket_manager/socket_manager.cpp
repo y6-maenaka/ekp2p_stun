@@ -112,11 +112,11 @@ int SocketManager::send( std::shared_ptr<EKP2PMessage> msg )
 
 
 
-size_t SocketManager::receive( std::shared_ptr<unsigned char> *retRaw, struct sockaddr_in *fromAddr  )
+size_t SocketManager::receive( std::shared_ptr<unsigned char> *retRaw, struct sockaddr_in &fromAddr  )
 {
 	unsigned int fromAddrLength = sizeof(struct sockaddr_in);
 	struct EKP2PMessageHeader::Meta _headerMeta; // なぜかEKP2PMessageHeaderを宣言するとエラー落ちする
-	recvfrom( _sock, &_headerMeta , sizeof(struct EKP2PMessageHeader::Meta), MSG_PEEK, (struct sockaddr *)fromAddr, &fromAddrLength ); // セグメントの受信
+	recvfrom( _sock, &_headerMeta , sizeof(struct EKP2PMessageHeader::Meta), MSG_PEEK, (struct sockaddr *)&fromAddr, &fromAddrLength ); // セグメントの受信
 	
 	size_t rawMSGLength = _headerMeta.headerLength() + _headerMeta.payloadLength();
 	
