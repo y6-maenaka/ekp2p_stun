@@ -14,4 +14,5 @@ target_link_libraries( server_ver_0 PRIVATE
                         SHARED_COMPONENTS)
 target_compile_definitions( server_ver_0 PUBLIC )
 
+
 add_definitions( -std=c++17 )

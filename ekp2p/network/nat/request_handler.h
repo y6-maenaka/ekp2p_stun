@@ -6,8 +6,6 @@
 #include <memory>
 #include <thread>
 
-#include <unistd.h>
-
 
 struct SBSegment;
 class StreamBuffer;
@@ -18,6 +16,8 @@ namespace ekp2p{
 
 
 struct StunResponse;
+
+
 
 
 class StunRequestHandlerDaemon

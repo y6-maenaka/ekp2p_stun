@@ -22,6 +22,8 @@ struct sockaddr_in RequesterAddr::toSockaddr_in()
 
 
 
+
+
 size_t StunRequest::exportRaw( std::shared_ptr<unsigned char> *retRaw )
 {
 	(*retRaw) = std::shared_ptr<unsigned char>( new unsigned char[sizeof(struct StunRequest)] );
@@ -29,9 +31,6 @@ size_t StunRequest::exportRaw( std::shared_ptr<unsigned char> *retRaw )
 
 	return sizeof( struct StunResponse );
 }
-
-
-
 
 
 
@@ -57,6 +56,18 @@ unsigned int StunResponse::importRaw( unsigned char *from , unsigned int fromSiz
 }
 
 
+unsigned int StunResponse::exportRaw( unsigned char **ret )
+{
+	*ret = new unsigned char[ sizeof( struct StunResponse) ];
+
+	unsigned int currentPtr = 0;
+
+	memcpy( *ret , &_message_type , sizeof(_message_type) ); currentPtr += sizeof( _message_type );
+	memcpy( *ret + currentPtr , &_message_size , sizeof(_message_size) ); currentPtr += sizeof( _message_size );
+	memcpy( *ret + currentPtr , &_requesterAddr , sizeof(_requesterAddr) ); currentPtr += sizeof( _requesterAddr );
+
+	return currentPtr;
+}
 
 size_t StunResponse::exportRaw( std::shared_ptr<unsigned char> *retRaw )
 {

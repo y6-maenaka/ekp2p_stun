@@ -73,26 +73,26 @@ private:
 	struct 
 	{
 		std::shared_ptr<EKP2PBroker> _broker;
-		std::shared_ptr<StreamBufferContainer> _toBrokerSB;
+		std::shared_ptr<StreamBufferContainer> _toBrokerSBC;
 	} _brokerDaemon;
 
 	struct 
 	{
 		std::shared_ptr<EKP2PSender>	_sender;
-		std::shared_ptr<StreamBufferContainer> _toSenderSB;
+		std::shared_ptr<StreamBufferContainer> _toSenderSBC;
 	} _senderDaemon;
 
 
 	struct
 	{
 		std::shared_ptr<EKP2PReceiver> _receiver;
-		std::shared_ptr<StreamBufferContainer> _toReseiverSB;
+		std::shared_ptr<StreamBufferContainer> _toReseiverSBC;
 	} _receiverDaemon;
 
 	struct
 	{
 		std::shared_ptr<EKP2PKRoutingTableUpdator> _manager;
-		std::shared_ptr<StreamBufferContainer> _toManagerSB;
+		std::shared_ptr<StreamBufferContainer> _toManagerSBC;
 	} _routingTableManagerDaemon;
 
 
@@ -112,7 +112,7 @@ public:
 	int send( KClientNode *targetNode , void* payload , unsigned short payloadLength , unsigned short protocol );
 	//bool startMonitor( unsigned short port );
 
-	
+
 	std::shared_ptr<StreamBufferContainer> toBrokerSBC();
 	std::shared_ptr<StreamBufferContainer> toReseiverSBC();
 	std::shared_ptr<StreamBufferContainer> toSenderSBC();

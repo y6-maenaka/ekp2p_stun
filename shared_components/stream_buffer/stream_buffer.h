@@ -26,7 +26,6 @@ namespace ekp2p
 
 constexpr unsigned int DEFAULT_STREAM_BUFFER_CAPACITY = 20;
 
-
 constexpr unsigned char SB_FLAG_MODULE_EXIT = 0x01;
 
 
@@ -56,7 +55,8 @@ struct SBSegment
 		std::shared_ptr<ekp2p::KNodeAddr> _sourceKNodeAddr;
 		std::vector< std::shared_ptr<ekp2p::KNodeAddr> > _relayKNodeAddrVector;
 
-		struct sockaddr_in _rawClientAddr;
+		struct sockaddr_in _rawSenderAddr; // フラグがSENDBACKの時に優先される
+		struct sockaddr_in _destinationAddr; // フラグがUNICASTの時に優先される
 	} _ekp2pBlock;
 
 
@@ -88,7 +88,8 @@ public:
 	int sendFlag();
 	unsigned short forwardingSBCID();
 	unsigned char flag();
-	struct sockaddr_in rawClientAddr();
+	struct sockaddr_in rawSenderAddr();
+	struct sockaddr_in destinationAddr();
 
 	/* Setter群 */
 	void body( void* body , unsigned short bodyLength );
@@ -102,7 +103,8 @@ public:
 	void sendFlag( int target );
 	void forwardingSBCID( unsigned short target );
 	void flag( unsigned char target );
-	void rawClientAddr( struct sockaddr_in target );
+	void rawSenderAddr( struct sockaddr_in target );
+	void destinationAddr( struct sockaddr_in target );
 
 
 	// Import関係

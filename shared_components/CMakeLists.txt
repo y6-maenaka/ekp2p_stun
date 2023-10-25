@@ -1,8 +1,10 @@
 cmake_minimum_required( VERSION 3.2 )
 
 
+
 find_package(PkgConfig REQUIRED)
 pkg_search_module(OPENSSL REQUIRED openssl)
+
 
 
 if( OPENSSL_FOUND )
@@ -13,7 +15,10 @@ else()
 endif()
 
 
+
+
 add_library( SHARED_COMPONENTS SHARED
+
 							cipher/ecdsa_manager.cpp
 
 							hash/sha_hash.cpp
@@ -30,9 +35,10 @@ add_library( SHARED_COMPONENTS SHARED
 
 
 target_link_libraries( SHARED_COMPONENTS PUBLIC
-			${OPENSSL_LIBRARIES}
-			#EKP2P #SBSegmentをekp2p::headerから作成するために必要
+												${OPENSSL_LIBRARIES}
+												EKP2P #SBSegmentをekp2p::headerから作成するために必要
 )
+
 
 
 

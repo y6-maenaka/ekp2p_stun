@@ -315,14 +315,6 @@ void EKP2PMessageHeader::printRaw()
 	}
 
 
-	std::shared_ptr<unsigned char> exportedRaw; size_t exportedRawLength;
-	exportedRawLength = this->exportRaw( &exportedRaw );
-	std::cout << "[ all ] :: ";
-	for( int i=0; i<exportedRawLength; i++ ){
-		printf("%02X", exportedRaw.get()[i]);
-	} std::cout << "\n";
-
-
 }
 
 };

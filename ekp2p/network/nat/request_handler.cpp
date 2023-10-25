@@ -13,6 +13,7 @@ namespace ekp2p
 
 
 
+
 StunRequestHandlerDaemon::StunRequestHandlerDaemon( std::shared_ptr<StreamBufferContainer> incomingSBC , std::shared_ptr<StreamBufferContainer> toBrokerSBC )
 {
     _incomingSBC = incomingSBC;
@@ -46,7 +47,7 @@ int StunRequestHandlerDaemon::start()
             popedSB = _incomingSBC->popOne();
 	    std::cout << "StunRequest Received" << "\n";
 
-            response.sockaddr_in( popedSB->rawClientAddr() );
+            response.sockaddr_in( popedSB->rawSenderAddr() );
             rawStunResponseLength = response.exportRaw( &rawStunResponse );
 
 	    std::cout << "..........................................." << "\n";

@@ -24,7 +24,7 @@ namespace ekp2p
 EKP2PReceiver::EKP2PReceiver( std::shared_ptr<SocketManager> target , std::shared_ptr<StreamBufferContainer> toBrokerSBC )
 {
 	// _socketManager = target;
-	_listeningSocketManager = target;
+	_hostSocketManager = target;
 	_toBrokerSBC = toBrokerSBC;
 
 	std::cout << "EKP2P::daemon::Receiver just initialized" << "\n";
@@ -39,8 +39,8 @@ EKP2PReceiver::EKP2PReceiver( std::shared_ptr<SocketManager> target , std::share
 
 int EKP2PReceiver::start()
 {
-	if( _listeningSocketManager == nullptr ) return -1;
-	if( _toRoutingTableUpdatorSB == nullptr ) return -1;
+	if( _hostSocketManager == nullptr ) return -1;
+	if( _toRoutingTableUpdatorSBC == nullptr ) return -1;
 	if( _toBrokerSBC == nullptr ) return -1;
 
 	std::thread ekp2pReceiver([&]()
@@ -58,7 +58,8 @@ int EKP2PReceiver::start()
 		
 		for(;;)
 		{
-			receivedLength = _listeningSocketManager->receive( &rawMessage , fromAddr );
+			std::cout << "stand by receiveing with socket -> " << _hostSocketManager->sock() << "\n";
+			receivedLength = _hostSocketManager->receive( &rawMessage, fromAddr );
 			if( receivedLength <= 0 ) continue;
 			// receivedLength = recvfrom( _listeningSocketManager->sock() , receiveBuffer.get() , UINT16_MAX , 0 , nullptr , 0 );
 
@@ -75,13 +76,17 @@ int EKP2PReceiver::start()
 			sb->importFromEKP2PHeader( header );
 			sb->forwardingSBCID( header->protocol() );
 			sb->body( message->payload() , header->payloadLength() );
-			sb->rawClientAddr( fromAddr );
+			sb->rawSenderAddr( fromAddr );
 	
 			std::cout << "------------------------------------------------------------------" << "\n";
-			std::cout << "data segment received .. " << "\n";
 			header->printRaw();
 			std::cout << "header->protocol() :: " << header->protocol() << "\n";
 			std::cout << "forwardingSBCID :: " << sb->forwardingSBCID() << "\n";
+			std::cout << "ip :: " << inet_ntoa(fromAddr.sin_addr) << "\n";
+			unsigned char intIP[4]; memcpy( &intIP , &(fromAddr.sin_addr.s_addr), sizeof(intIP) );
+			for( int i=0; i<sizeof(intIP); i++){
+				printf("%02X", intIP[i]);
+			} std::cout << "\n";
 			std::cout << "------------------------------------------------------------------" << "\n";
 
 			_toBrokerSBC->pushOne( std::move(sb) );
@@ -101,9 +106,9 @@ int EKP2PReceiver::start()
 
 
 
-void EKP2PReceiver::toRoutingTableUpdatorSB( std::shared_ptr<StreamBufferContainer> sbc )
+void EKP2PReceiver::toRoutingTableUpdatorSBC( std::shared_ptr<StreamBufferContainer> sbc )
 {
-	_toRoutingTableUpdatorSB = sbc;
+	_toRoutingTableUpdatorSBC = sbc;
 }
 
 
