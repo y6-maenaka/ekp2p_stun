@@ -82,6 +82,7 @@ int EKP2PSender::start()
 					std::cout << "------------------" << "\n";
 
 					msg->payload( nullptr , 0 );
+					msg->header()->protocol( popedSB->protocol() );
 					msg->header()->rpcType( KADEMLIA_RPC_PONG );
 					msg->header()->sourceKNodeAddr( _kRoutingTable->hostNode()->kNodeAddr() ); // 自身のアドレスをセット
 
@@ -105,6 +106,7 @@ int EKP2PSender::start()
 
 					std::shared_ptr<EKP2PMessage> msg = std::make_shared<EKP2PMessage>();
 					msg->payload( nullptr , 0 );
+					msg->header()->protocol( popedSB->protocol() );
 					msg->header()->rpcType( KADEMLIA_RPC_PONG );
 					msg->header()->sourceKNodeAddr( _kRoutingTable->hostNode()->kNodeAddr() ); // 自身のアドレスをセット
 

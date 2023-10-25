@@ -105,7 +105,12 @@ int SocketManager::send( std::shared_ptr<EKP2PMessage> msg )
 	std::shared_ptr<unsigned char> rawMSG; size_t rawMSGLength;
 	rawMSGLength = msg->exportRaw( &rawMSG );
 
-	std::cout << "............... " << rawMSGLength << "\n";
+	std::cout << "========================================================" << "\n";
+	std::cout << "Sended Length :: ( " << rawMSGLength << " ) \n";
+	for( int i=0; i<rawMSGLength; i++ ){
+		printf("%02X", rawMSG.get()[i]);
+	} std::cout << "\n";
+	std::cout << "========================================================" << "\n";
 
 	return ::sendto( _sock , rawMSG.get() , rawMSGLength , 0 , (struct sockaddr *)&_addr , sizeof(_addr) );
 }
@@ -114,15 +119,23 @@ int SocketManager::send( std::shared_ptr<EKP2PMessage> msg )
 
 size_t SocketManager::receive( std::shared_ptr<unsigned char> *retRaw, struct sockaddr_in &fromAddr  )
 {
-	unsigned int fromAddrLength = sizeof(struct sockaddr_in);
+	unsigned int fromAddrLength = sizeof(fromAddr);
 	struct EKP2PMessageHeader::Meta _headerMeta; // なぜかEKP2PMessageHeaderを宣言するとエラー落ちする
-	recvfrom( _sock, &_headerMeta , sizeof(struct EKP2PMessageHeader::Meta), MSG_PEEK, (struct sockaddr *)&fromAddr, &fromAddrLength ); // セグメントの受信
+	recvfrom( _sock, &_headerMeta , sizeof(struct EKP2PMessageHeader::Meta), MSG_PEEK, nullptr , 0 ); // セグメントの受信
 	
 	size_t rawMSGLength = _headerMeta.headerLength() + _headerMeta.payloadLength();
 	
 	size_t retLength;
 	(*retRaw) = std::shared_ptr<unsigned char>( new unsigned char[rawMSGLength] );
-	retLength = recvfrom( _sock, (*retRaw).get() , rawMSGLength , 0, nullptr, 0 ); // セグメントの受信
+	retLength = recvfrom( _sock, (*retRaw).get() , rawMSGLength , 0, (struct sockaddr *)&fromAddr ,  &fromAddrLength ); // セグメントの受信
+
+	std::cout << "++++++++++++++++++++++++++++++" << "\n";
+	std::cout << "This is SocketManager::receive" << "\n";
+	std::cout << "received from ip :: " << inet_ntoa(fromAddr.sin_addr) << "\n";
+	std::cout << "received from port :: " << ntohs(fromAddr.sin_port) << "\n";
+	std::cout << "received MSG Length :: " << rawMSGLength << "\n";
+	std::cout << "++++++++++++++++++++++++++++++" << "\n";
+		
 
 	return retLength;
 }

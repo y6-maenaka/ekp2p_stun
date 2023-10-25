@@ -42,22 +42,22 @@ int StunRequestHandlerDaemon::start()
         std::shared_ptr<unsigned char> rawStunResponse; size_t rawStunResponseLength;
         for(;;)
         {
-						std::cout << "pop befoer" << "\n";
+	    std::cout << "pop befoer" << "\n";
             popedSB = _incomingSBC->popOne();
-						std::cout << "StunRequest Received" << "\n";
-
+	    std::cout << "StunRequest Received" << "\n";
 
             response.sockaddr_in( popedSB->rawClientAddr() );
 
             rawStunResponseLength = response.exportRaw( &rawStunResponse );
 
             popedSB->body( rawStunResponse, rawStunResponseLength );
+	    popedSB->protocol( DEFAULT_DAEMON_FORWARDING_SBC_ID_NATER  );
             popedSB->forwardingSBCID( DEFAULT_DAEMON_FORWARDING_SBC_ID_SENDER ); // 転送先の設定
             popedSB->sendFlag( EKP2P_SENDBACK | EKP2P_SEND_UNICAST ); // 送信モードの設定
             _toBrokerSBC->pushOne( std::move(popedSB) );
 
-						std::cout << "rawStunResponseLength :: " << rawStunResponseLength << "\n";
-						std::cout << "StunResponse Sended" << "\n";
+	    std::cout << "rawStunResponseLength :: " << rawStunResponseLength << "\n";
+	    std::cout << "StunResponse Sended" << "\n";
         }
 
     });
