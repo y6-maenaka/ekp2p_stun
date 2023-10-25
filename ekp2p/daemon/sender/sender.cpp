@@ -62,6 +62,13 @@ int EKP2PSender::start()
 		{
 			popedSB = _incomingSB->popOne();
 
+			std::cout << "--------------------" << "\n";
+			std::cout << "Send to .." << "\n";
+			std::cout << "ip :: " << inet_ntoa(popedSB->rawClientAddr().sin_addr) << "\n";
+			std::cout << "port :: " << ntohs(popedSB->rawClientAddr().sin_port) << "\n";
+			std::cout << "--------------------" << "\n";
+
+
 			switch( popedSB->sendFlag() )
 			{
 

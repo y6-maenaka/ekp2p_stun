@@ -46,7 +46,6 @@ int StunRequestHandlerDaemon::start()
             popedSB = _incomingSBC->popOne();
 						std::cout << "StunRequest Received" << "\n";
 
-						sleep(1);
 
             response.sockaddr_in( popedSB->rawClientAddr() );
 

@@ -78,6 +78,7 @@ int EKP2PReceiver::start()
 			sb->rawClientAddr( fromAddr );
 	
 			std::cout << "------------------------------------------------------------------" << "\n";
+			std::cout << "data segment received .. " << "\n";
 			header->printRaw();
 			std::cout << "header->protocol() :: " << header->protocol() << "\n";
 			std::cout << "forwardingSBCID :: " << sb->forwardingSBCID() << "\n";
