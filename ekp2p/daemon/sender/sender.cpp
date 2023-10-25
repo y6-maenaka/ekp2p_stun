@@ -81,7 +81,7 @@ int EKP2PSender::start()
 
 					std::cout << "------------------" << "\n";
 
-					msg->payload( nullptr , 0 );
+					msg->payload( popedSB->body() , popedSB->bodyLength() );
 					msg->header()->protocol( popedSB->protocol() );
 					msg->header()->rpcType( KADEMLIA_RPC_PONG );
 					msg->header()->sourceKNodeAddr( _kRoutingTable->hostNode()->kNodeAddr() ); // 自身のアドレスをセット
